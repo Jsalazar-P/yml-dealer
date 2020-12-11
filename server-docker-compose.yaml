@@ -51,7 +51,7 @@ services:
       - MYSQL_PASSWORD=mysqluserpassword
     networks:
       - traefikv2-public
-    user: 1001:1001
+    user: userid:userid
   mailhog:
     image: mailhog/mailhog:latest
     environment:
