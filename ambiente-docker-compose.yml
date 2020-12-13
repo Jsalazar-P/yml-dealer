@@ -5,7 +5,7 @@ services:
     environment:
       MAGE_ROOT: /var/www/app
       USER: www-data
-      USERID: 1001
+      USERID: iduser
       CRON: 1
     volumes:
       - '/home/username/Documents/Magento2/Proyectos/test.local:/var/www/app'
@@ -25,7 +25,7 @@ services:
       XDEBUG_CONFIG: remote_host=192.168.20.32  idekey=monge
       MAGE_ROOT: /var/www/app
       USER: www-data
-      USERID: 1001
+      USERID: iduser
     volumes:
       - '/home/username/Documents/Magento2/Proyectos/test.local:/var/www/app'
     depends_on:
