@@ -1,0 +1,59 @@
+version: '3.3'
+services:
+  test_local_cron:
+    image: andres3191/magento-cloud-php:7.2-fpm
+    environment:
+      MAGE_ROOT: /var/www/app
+      USER: www-data
+      USERID: 1001
+      CRON: 1
+    volumes:
+      - '/home/username/Documents/Magento2/Proyectos/test.local:/var/www/app'
+      - './php/php.ini:/usr/local/etc/php/conf.d/magento.ini'
+    depends_on:
+      - db
+      - mailhog
+    networks:
+      - Server_traefikv2-public
+    user: "${UID}:${GID}"
+  test_local_php:
+    image: andres3191/magento-cloud-php:7.2-fpm
+    environment:
+      PUBLIC_KEY_MAGENTO: 'hasjkhaskdjk23jkh32kj23'
+      PRIVATE_KEY_MAGENTO: 'askjhdkjh23kjh23khkj32sdfsdf'
+      MAGENTO_VERSION: '2.3.2'
+      XDEBUG_CONFIG: remote_host=192.168.20.32  idekey=monge
+      MAGE_ROOT: /var/www/app
+      USER: www-data
+      USERID: 1001
+    volumes:
+      - '/home/username/Documents/Magento2/Proyectos/test.local:/var/www/app'
+    depends_on:
+      - db
+    networks:
+      - Server_traefikv2-public
+  test_local_web:
+    image: andres3191/magento-cloud-nginx
+    environment:
+      ALIAS_SERVICE: test_local_php
+      NGINX_HOST_M2: test.local
+      MAGE_ROOT: /var/www/app
+    volumes:
+      - '/home/username/Documents/Magento2/Proyectos/test.local:/var/www/app'
+      - './nginx/app.conf:/etc/nginx/conf.d/default.conf'
+    depends_on:
+      - test_local_php
+    networks:
+      - Server_traefikv2-public
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.test_local-web.rule=Host(`test.local`)"
+        - "traefik.http.routers.test_local-web.entrypoints=websecure"
+        - "traefik.http.routers.test_local-web.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.test_local-web.loadbalancer.server.port=80"
+networks:
+  Server_traefikv2-public:
+    external: true
