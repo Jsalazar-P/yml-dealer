@@ -22,7 +22,7 @@ services:
       PUBLIC_KEY_MAGENTO: 'hasjkhaskdjk23jkh32kj23'
       PRIVATE_KEY_MAGENTO: 'askjhdkjh23kjh23khkj32sdfsdf'
       MAGENTO_VERSION: 'mageversion'
-      XDEBUG_CONFIG: remote_host=192.168.20.32  idekey=monge
+      XDEBUG_CONFIG: remote_host=127.0.0.1  idekey=keyid
       MAGE_ROOT: /var/www/app
       USER: www-data
       USERID: iduser

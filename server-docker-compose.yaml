@@ -41,7 +41,7 @@ services:
   db:
     image: 'mariadb:10.2'
     ports:
-      - 3307:3307
+      - 3307:3306
     volumes:
       - './Data/mariadb/data/:/var/lib/mysql'
     environment:
