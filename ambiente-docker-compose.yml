@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   test_local_cron:
-    image: andres3191/magento-cloud-php:7.2-fpm
+    image: phpimage
     environment:
       MAGE_ROOT: /var/www/app
       USER: www-data
@@ -17,7 +17,7 @@ services:
       - Server_traefikv2-public
     user: "${UID}:${GID}"
   test_local_php:
-    image: andres3191/magento-cloud-php:7.2-fpm
+    image: phpimage
     environment:
       PUBLIC_KEY_MAGENTO: 'hasjkhaskdjk23jkh32kj23'
       PRIVATE_KEY_MAGENTO: 'askjhdkjh23kjh23khkj32sdfsdf'
@@ -33,7 +33,7 @@ services:
     networks:
       - Server_traefikv2-public
   test_local_web:
-    image: andres3191/magento-cloud-nginx
+    image: nginximage
     environment:
       ALIAS_SERVICE: test_local_php
       NGINX_HOST_M2: test.local
@@ -54,6 +54,21 @@ services:
         - "traefik.http.routers.test_local-web.entrypoints=websecure"
         - "traefik.http.routers.test_local-web.tls.certresolver=letsencryptresolver"
         - "traefik.http.services.test_local-web.loadbalancer.server.port=80"
+  test_local_es:
+    image: elasticimage
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    networks:
+      - Server_traefikv2-public
+  test_local_redis:
+    image: redis
+    networks:
+      - Server_traefikv2-public
+
 networks:
   Server_traefikv2-public:
     external: true
