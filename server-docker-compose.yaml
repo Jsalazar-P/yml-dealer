@@ -44,6 +44,7 @@ services:
       - 3307:3306
     volumes:
       - './Data/mariadb/data/:/var/lib/mysql'
+      - pathbackups
     environment:
       - MYSQL_ROOT_PASSWORD=mysqlrootpassword
       - MYSQL_DATABASE=mysqlinitialdatabase
